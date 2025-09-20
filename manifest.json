@@ -1,0 +1,31 @@
+{
+  "name": "资源搜 - 免费网盘资源搜索引擎",
+  "short_name": "资源搜",
+  "description": "免费的网盘资源搜索引擎，支持百度网盘、阿里云盘、夸克网盘等多平台资源搜索",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8f9fa",
+  "theme_color": "#3498db",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "assets/images/logo.svg",
+      "sizes": "32x32",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "assets/images/favicon.svg",
+      "sizes": "16x16",
+      "type": "image/svg+xml"
+    },
+    {
+      "src": "assets/images/logo-hero.svg",
+      "sizes": "80x80",
+      "type": "image/svg+xml"
+    }
+  ],
+  "categories": ["utilities", "productivity"],
+  "lang": "zh-CN",
+  "scope": "/",
+  "prefer_related_applications": false
+}
