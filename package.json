@@ -1,0 +1,33 @@
+{
+  "name": "ziyuanso-website",
+  "version": "1.0.0",
+  "description": "资源搜 - 免费网盘资源搜索引擎网站",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve . -l 3000",
+    "build": "echo '静态网站无需构建'",
+    "dev": "npx serve . -l 3000",
+    "preview": "npx serve . -l 8080"
+  },
+  "keywords": [
+    "网盘搜索",
+    "资源搜索",
+    "百度网盘",
+    "阿里云盘",
+    "夸克网盘",
+    "静态网站"
+  ],
+  "author": "ziyuanso.net",
+  "license": "MIT",
+  "devDependencies": {
+    "serve": "^14.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/yourusername/ziyuanso-website.git"
+  },
+  "homepage": "https://www.ziyuanso.net",
+  "engines": {
+    "node": ">=14.0.0"
+  }
+}

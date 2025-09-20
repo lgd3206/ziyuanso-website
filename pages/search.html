@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>搜索结果 - 资源搜</title>
+    <meta name="description" content="资源搜搜索结果页面">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/search.css">
+    <link rel="icon" type="image/x-icon" href="../assets/images/favicon.ico">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="/">
+                        <img src="../assets/images/logo.png" alt="资源搜" class="logo-img">
+                        <span class="logo-text">资源搜</span>
+                    </a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/">首页</a></li>
+                    <li><a href="/pages/hot.html">热门资源</a></li>
+                    <li><a href="/pages/category.html">分类浏览</a></li>
+                    <li><a href="/pages/about.html">关于我们</a></li>
+                </ul>
+                <div class="nav-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="search-page">
+        <div class="search-header">
+            <div class="search-container">
+                <form class="search-form compact" action="/pages/search.html" method="GET">
+                    <div class="search-input-wrapper">
+                        <input type="text"
+                               name="q"
+                               class="search-input"
+                               placeholder="请输入要搜索的资源关键词..."
+                               autocomplete="off"
+                               required>
+                        <button type="submit" class="search-btn">
+                            <svg class="search-icon" viewBox="0 0 24 24">
+                                <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="results-container">
+            <div class="results-sidebar">
+                <div class="filter-section">
+                    <h3>筛选条件</h3>
+
+                    <div class="filter-group">
+                        <h4>网盘平台</h4>
+                        <label class="filter-option">
+                            <input type="checkbox" name="platform" value="baidu" checked>
+                            <span>📦 百度网盘</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" name="platform" value="aliyun" checked>
+                            <span>☁️ 阿里云盘</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" name="platform" value="quark" checked>
+                            <span>⚡ 夸克网盘</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" name="platform" value="xunlei">
+                            <span>⚡ 迅雷网盘</span>
+                        </label>
+                    </div>
+
+                    <div class="filter-group">
+                        <h4>文件类型</h4>
+                        <label class="filter-option">
+                            <input type="radio" name="filetype" value="all" checked>
+                            <span>📁 全部类型</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="filetype" value="video">
+                            <span>🎬 视频</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="filetype" value="music">
+                            <span>🎵 音乐</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="filetype" value="software">
+                            <span>💻 软件</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="filetype" value="document">
+                            <span>📄 文档</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="filetype" value="archive">
+                            <span>📦 压缩包</span>
+                        </label>
+                    </div>
+
+                    <div class="filter-group">
+                        <h4>文件大小</h4>
+                        <label class="filter-option">
+                            <input type="radio" name="filesize" value="all" checked>
+                            <span>全部大小</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="filesize" value="small">
+                            <span>< 100MB</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="filesize" value="medium">
+                            <span>100MB - 1GB</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="filesize" value="large">
+                            <span>> 1GB</span>
+                        </label>
+                    </div>
+
+                    <div class="filter-group">
+                        <h4>时间范围</h4>
+                        <label class="filter-option">
+                            <input type="radio" name="timerange" value="all" checked>
+                            <span>全部时间</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="timerange" value="day">
+                            <span>最近一天</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="timerange" value="week">
+                            <span>最近一周</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="radio" name="timerange" value="month">
+                            <span>最近一月</span>
+                        </label>
+                    </div>
+
+                    <button class="apply-filters-btn">应用筛选</button>
+                </div>
+            </div>
+
+            <div class="results-main">
+                <div class="results-header">
+                    <div class="results-info">
+                        <h2>搜索结果</h2>
+                        <p class="results-count">正在搜索...</p>
+                    </div>
+                    <div class="results-sort">
+                        <label>排序方式：</label>
+                        <select class="sort-select">
+                            <option value="relevance">相关度</option>
+                            <option value="date">时间</option>
+                            <option value="size">大小</option>
+                            <option value="name">名称</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="search-results">
+                    <div class="results-loading">
+                        <div class="spinner"></div>
+                        <p>正在搜索资源...</p>
+                    </div>
+                </div>
+
+                <div class="pagination">
+                    <button class="page-btn prev-btn" disabled>上一页</button>
+                    <div class="page-numbers">
+                        <button class="page-btn active">1</button>
+                        <button class="page-btn">2</button>
+                        <button class="page-btn">3</button>
+                        <span class="page-dots">...</span>
+                        <button class="page-btn">10</button>
+                    </div>
+                    <button class="page-btn next-btn">下一页</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>资源搜</h3>
+                    <p>专业的网盘资源搜索引擎</p>
+                </div>
+                <div class="footer-section">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="/">首页</a></li>
+                        <li><a href="/pages/hot.html">热门资源</a></li>
+                        <li><a href="/pages/category.html">分类浏览</a></li>
+                        <li><a href="/pages/about.html">关于我们</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 www.ziyuanso.net - 所有权利保留</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../assets/js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>资源搜 - 免费网盘资源搜索引擎</title>
+    <meta name="description" content="资源搜提供免费的网盘资源搜索服务，支持百度网盘、阿里云盘、夸克网盘等多平台资源快速搜索">
+    <meta name="keywords" content="网盘搜索,资源搜索,百度网盘,阿里云盘,夸克网盘,免费资源">
+    <link rel="stylesheet" href="assets/css/style.css">
+    <link rel="icon" type="image/x-icon" href="assets/images/favicon.ico">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="/">
+                        <img src="assets/images/logo.png" alt="资源搜" class="logo-img">
+                        <span class="logo-text">资源搜</span>
+                    </a>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="/">首页</a></li>
+                    <li><a href="/pages/hot.html">热门资源</a></li>
+                    <li><a href="/pages/category.html">分类浏览</a></li>
+                    <li><a href="/pages/about.html">关于我们</a></li>
+                </ul>
+                <div class="nav-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="main">
+        <section class="hero">
+            <div class="hero-container">
+                <h1 class="hero-title">资源搜</h1>
+                <p class="hero-subtitle">免费网盘资源搜索引擎</p>
+                <p class="hero-description">支持百度网盘、阿里云盘、夸克网盘、迅雷网盘等多平台资源搜索</p>
+
+                <div class="search-container">
+                    <form class="search-form" action="/pages/search.html" method="GET">
+                        <div class="search-input-wrapper">
+                            <input type="text"
+                                   name="q"
+                                   class="search-input"
+                                   placeholder="请输入要搜索的资源关键词..."
+                                   autocomplete="off"
+                                   required>
+                            <button type="submit" class="search-btn">
+                                <svg class="search-icon" viewBox="0 0 24 24">
+                                    <path d="M15.5 14h-.79l-.28-.27C15.41 12.59 16 11.11 16 9.5 16 5.91 13.09 3 9.5 3S3 5.91 3 9.5 5.91 16 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                                </svg>
+                                搜索
+                            </button>
+                        </div>
+                        <div class="search-filters">
+                            <label class="filter-option">
+                                <input type="checkbox" name="platform" value="baidu" checked>
+                                <span>百度网盘</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="platform" value="aliyun" checked>
+                                <span>阿里云盘</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="platform" value="quark" checked>
+                                <span>夸克网盘</span>
+                            </label>
+                            <label class="filter-option">
+                                <input type="checkbox" name="platform" value="xunlei">
+                                <span>迅雷网盘</span>
+                            </label>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="hot-keywords">
+                    <span class="hot-label">热门搜索：</span>
+                    <a href="/pages/search.html?q=电影" class="hot-keyword">电影</a>
+                    <a href="/pages/search.html?q=电视剧" class="hot-keyword">电视剧</a>
+                    <a href="/pages/search.html?q=音乐" class="hot-keyword">音乐</a>
+                    <a href="/pages/search.html?q=软件" class="hot-keyword">软件</a>
+                    <a href="/pages/search.html?q=教程" class="hot-keyword">教程</a>
+                    <a href="/pages/search.html?q=文档" class="hot-keyword">文档</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="features-container">
+                <h2 class="features-title">为什么选择资源搜？</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🔍</div>
+                        <h3>智能搜索</h3>
+                        <p>采用先进的搜索算法，快速准确地找到您需要的资源</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🌐</div>
+                        <h3>多平台支持</h3>
+                        <p>支持百度网盘、阿里云盘、夸克网盘等主流网盘平台</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">💰</div>
+                        <h3>完全免费</h3>
+                        <p>所有搜索服务完全免费，无需注册，即搜即用</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">⚡</div>
+                        <h3>实时更新</h3>
+                        <p>定期更新资源索引，确保搜索结果的时效性</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="categories">
+            <div class="categories-container">
+                <h2 class="categories-title">热门分类</h2>
+                <div class="categories-grid">
+                    <a href="/pages/search.html?category=movie" class="category-card">
+                        <div class="category-icon">🎬</div>
+                        <span>影视</span>
+                    </a>
+                    <a href="/pages/search.html?category=music" class="category-card">
+                        <div class="category-icon">🎵</div>
+                        <span>音乐</span>
+                    </a>
+                    <a href="/pages/search.html?category=software" class="category-card">
+                        <div class="category-icon">💻</div>
+                        <span>软件</span>
+                    </a>
+                    <a href="/pages/search.html?category=document" class="category-card">
+                        <div class="category-icon">📚</div>
+                        <span>文档</span>
+                    </a>
+                    <a href="/pages/search.html?category=game" class="category-card">
+                        <div class="category-icon">🎮</div>
+                        <span>游戏</span>
+                    </a>
+                    <a href="/pages/search.html?category=education" class="category-card">
+                        <div class="category-icon">🎓</div>
+                        <span>教育</span>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>资源搜</h3>
+                    <p>专业的网盘资源搜索引擎</p>
+                    <div class="footer-social">
+                        <a href="#" class="social-link">📧</a>
+                        <a href="#" class="social-link">📱</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h4>快速链接</h4>
+                    <ul>
+                        <li><a href="/">首页</a></li>
+                        <li><a href="/pages/hot.html">热门资源</a></li>
+                        <li><a href="/pages/category.html">分类浏览</a></li>
+                        <li><a href="/pages/about.html">关于我们</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>支持平台</h4>
+                    <ul>
+                        <li>百度网盘</li>
+                        <li>阿里云盘</li>
+                        <li>夸克网盘</li>
+                        <li>迅雷网盘</li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>帮助中心</h4>
+                    <ul>
+                        <li><a href="/pages/help.html">使用帮助</a></li>
+                        <li><a href="/pages/contact.html">联系我们</a></li>
+                        <li><a href="/pages/privacy.html">隐私政策</a></li>
+                        <li><a href="/pages/terms.html">服务条款</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 www.ziyuanso.net - 所有权利保留</p>
+                <p>本站仅提供搜索服务，不存储任何文件内容</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/main.js"></script>
+</body>
+</html>
