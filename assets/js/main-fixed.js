@@ -403,7 +403,7 @@ class SimpleSearchResultsPage {
     generateQuickResults(query) {
         console.log('生成快速测试结果:', query);
         const results = [];
-        const sources = ['PanSearch', '去盘搜', 'Labi网盘', '直真搜索', '闪电资源'];
+        const sources = ['PanSearch', '去盘搜', 'Labi网盘', '夸克网盘', '直真搜索', '闪电资源'];
         const types = ['video', 'software', 'document', 'music'];
 
         for (let i = 0; i < 15; i++) {
@@ -554,7 +554,7 @@ class SimpleSearchResultsPage {
                     </span>
                 </div>
                 <div class="result-actions" style="display: flex; gap: 1rem;">
-                    <button onclick="alert('下载链接: ${result.downloadUrl}')"
+                    <button onclick="window.showDownloadDialog('${result.downloadUrl}', '${result.title}')"
                             style="padding: 0.5rem 1rem; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
                         ⬇️ 获取链接
                     </button>
@@ -657,3 +657,186 @@ if (document.readyState === 'complete' || document.readyState === 'interactive')
 }
 
 console.log('修复版搜索脚本加载完成');
+
+// 全局函数：显示下载对话框
+window.showDownloadDialog = function(downloadUrl, title) {
+    // 移除已存在的对话框
+    const existingDialog = document.querySelector('.download-dialog-overlay');
+    if (existingDialog) {
+        existingDialog.remove();
+    }
+
+    // 创建对话框覆盖层
+    const dialogOverlay = document.createElement('div');
+    dialogOverlay.className = 'download-dialog-overlay';
+    dialogOverlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10000;
+    `;
+
+    // 创建对话框内容
+    const dialog = document.createElement('div');
+    dialog.className = 'download-dialog';
+    dialog.style.cssText = `
+        background: white;
+        border-radius: 8px;
+        padding: 2rem;
+        max-width: 500px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        position: relative;
+    `;
+
+    dialog.innerHTML = `
+        <div style="text-align: center;">
+            <h3 style="margin: 0 0 1rem 0; color: #2c3e50;">🔗 资源链接</h3>
+            <div style="background: #f8f9fa; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; border-left: 4px solid #3498db;">
+                <p style="margin: 0 0 0.5rem 0; font-weight: bold; color: #2c3e50;">资源名称：</p>
+                <p style="margin: 0 0 1rem 0; color: #7f8c8d; word-break: break-all;">${title}</p>
+                <p style="margin: 0 0 0.5rem 0; font-weight: bold; color: #2c3e50;">下载链接：</p>
+                <p style="margin: 0; color: #3498db; word-break: break-all;">${downloadUrl}</p>
+            </div>
+            <div style="display: flex; gap: 1rem; justify-content: center;">
+                <button onclick="window.copyToClipboard('${downloadUrl}')"
+                        style="padding: 0.75rem 1.5rem; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+                    📋 复制链接
+                </button>
+                <button onclick="window.open('${downloadUrl}', '_blank')"
+                        style="padding: 0.75rem 1.5rem; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+                    🔗 打开链接
+                </button>
+                <button onclick="window.closeDownloadDialog()"
+                        style="padding: 0.75rem 1.5rem; background: #95a5a6; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+                    ❌ 关闭
+                </button>
+            </div>
+        </div>
+    `;
+
+    dialogOverlay.appendChild(dialog);
+    document.body.appendChild(dialogOverlay);
+
+    // 点击覆盖层关闭对话框
+    dialogOverlay.addEventListener('click', (e) => {
+        if (e.target === dialogOverlay) {
+            window.closeDownloadDialog();
+        }
+    });
+
+    // ESC键关闭对话框
+    const handleEscape = (e) => {
+        if (e.key === 'Escape') {
+            window.closeDownloadDialog();
+            document.removeEventListener('keydown', handleEscape);
+        }
+    };
+    document.addEventListener('keydown', handleEscape);
+};
+
+// 全局函数：关闭下载对话框
+window.closeDownloadDialog = function() {
+    const dialog = document.querySelector('.download-dialog-overlay');
+    if (dialog) {
+        dialog.remove();
+    }
+};
+
+// 全局函数：复制到剪贴板
+window.copyToClipboard = function(text) {
+    if (navigator.clipboard) {
+        navigator.clipboard.writeText(text).then(() => {
+            // 显示成功提示
+            window.showToast('链接已复制到剪贴板', 'success');
+        }).catch(() => {
+            // 降级方案
+            window.fallbackCopyToClipboard(text);
+        });
+    } else {
+        window.fallbackCopyToClipboard(text);
+    }
+};
+
+// 降级复制方案
+window.fallbackCopyToClipboard = function(text) {
+    const textArea = document.createElement('textarea');
+    textArea.value = text;
+    textArea.style.position = 'fixed';
+    textArea.style.left = '-999999px';
+    textArea.style.top = '-999999px';
+    document.body.appendChild(textArea);
+    textArea.focus();
+    textArea.select();
+
+    try {
+        document.execCommand('copy');
+        window.showToast('链接已复制到剪贴板', 'success');
+    } catch (err) {
+        console.error('复制失败:', err);
+        window.showToast('复制失败，请手动复制', 'error');
+    }
+
+    document.body.removeChild(textArea);
+};
+
+// 全局函数：显示提示消息
+window.showToast = function(message, type = 'info') {
+    // 移除已存在的提示
+    const existingToast = document.querySelector('.toast-message');
+    if (existingToast) {
+        existingToast.remove();
+    }
+
+    const toast = document.createElement('div');
+    toast.className = 'toast-message';
+
+    const colors = {
+        success: '#27ae60',
+        error: '#e74c3c',
+        info: '#3498db',
+        warning: '#f39c12'
+    };
+
+    toast.style.cssText = `
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        background: ${colors[type] || colors.info};
+        color: white;
+        padding: 1rem 1.5rem;
+        border-radius: 4px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        z-index: 10001;
+        font-size: 0.9rem;
+        max-width: 300px;
+        transform: translateX(400px);
+        transition: transform 0.3s ease-in-out;
+    `;
+
+    toast.textContent = message;
+    document.body.appendChild(toast);
+
+    // 动画显示
+    setTimeout(() => {
+        toast.style.transform = 'translateX(0)';
+    }, 100);
+
+    // 自动隐藏
+    setTimeout(() => {
+        toast.style.transform = 'translateX(400px)';
+        setTimeout(() => {
+            if (toast.parentNode) {
+                toast.remove();
+            }
+        }, 300);
+    }, 3000);
+};
