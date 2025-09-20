@@ -729,7 +729,7 @@ window.showDownloadDialog = function(downloadUrl, title) {
                 </button>
                 <button onclick="window.showLinkInfo('${downloadUrl}', '${title}')"
                         style="padding: 0.75rem 1.5rem; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
-                    ℹ️ 链接信息
+                    ℹ️ 使用说明
                 </button>
                 <button onclick="window.closeDownloadDialog()"
                         style="padding: 0.75rem 1.5rem; background: #95a5a6; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
@@ -761,7 +761,7 @@ window.showDownloadDialog = function(downloadUrl, title) {
 
 // 全局函数：显示链接信息
 window.showLinkInfo = function(downloadUrl, title) {
-    window.showToast('这是演示环境，实际使用时将跳转到真实网盘页面', 'info');
+    window.showToast('演示环境提示：实际部署时将提供真实下载功能', 'info');
 
     // 显示详细信息
     const infoDialog = document.createElement('div');
@@ -793,39 +793,57 @@ window.showLinkInfo = function(downloadUrl, title) {
 
     infoContent.innerHTML = `
         <div style="text-align: center;">
-            <h3 style="margin: 0 0 1.5rem 0; color: #2c3e50;">📋 使用说明</h3>
-            <div style="text-align: left; line-height: 1.6;">
-                <h4 style="color: #3498db; margin-bottom: 0.5rem;">🔗 关于链接：</h4>
-                <p style="margin-bottom: 1rem; color: #7f8c8d;">
-                    当前显示的是演示链接，实际部署后会连接到真实的网盘资源页面。
-                </p>
+            <h3 style="margin: 0 0 1.5rem 0; color: #2c3e50;">📋 演示环境说明</h3>
 
-                <h4 style="color: #3498db; margin-bottom: 0.5rem;">📥 如何下载：</h4>
+            <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 8px; padding: 1rem; margin-bottom: 1.5rem;">
+                <h4 style="margin: 0 0 0.5rem 0; color: #856404;">⚠️ 重要提示</h4>
+                <p style="margin: 0; color: #856404; line-height: 1.5;">
+                    当前为演示环境，所有链接均为测试数据，无法进行实际下载。
+                </p>
+            </div>
+
+            <div style="text-align: left; line-height: 1.6;">
+                <h4 style="color: #3498db; margin-bottom: 0.5rem;">🔧 实际部署后的功能：</h4>
                 <ul style="margin-bottom: 1rem; color: #7f8c8d; padding-left: 1.5rem;">
-                    <li>复制链接地址</li>
-                    <li>在浏览器中打开链接</li>
-                    <li>根据网盘平台要求进行下载</li>
-                    <li>部分资源可能需要提取码</li>
+                    <li>连接真实的网盘搜索API</li>
+                    <li>提供有效的下载链接</li>
+                    <li>支持提取码自动填充</li>
+                    <li>实时检测链接有效性</li>
                 </ul>
 
-                <h4 style="color: #3498db; margin-bottom: 0.5rem;">⚠️ 注意事项：</h4>
+                <h4 style="color: #3498db; margin-bottom: 0.5rem;">📥 预期使用流程：</h4>
                 <ul style="margin-bottom: 1rem; color: #7f8c8d; padding-left: 1.5rem;">
-                    <li>请确保网络连接稳定</li>
-                    <li>大文件建议使用下载工具</li>
-                    <li>注意文件安全性扫描</li>
-                    <li>遵守相关法律法规</li>
+                    <li>搜索关键词获取结果</li>
+                    <li>点击"获取链接"查看真实下载地址</li>
+                    <li>复制链接或直接跳转到网盘页面</li>
+                    <li>在网盘页面完成下载</li>
+                </ul>
+
+                <h4 style="color: #3498db; margin-bottom: 0.5rem;">🚀 开发者功能：</h4>
+                <ul style="margin-bottom: 1rem; color: #7f8c8d; padding-left: 1.5rem;">
+                    <li>模拟真实搜索结果展示</li>
+                    <li>测试用户界面交互</li>
+                    <li>验证响应式设计效果</li>
+                    <li>演示完整用户体验流程</li>
                 </ul>
 
                 <div style="background: #e8f5e8; padding: 1rem; border-radius: 4px; border-left: 4px solid #27ae60;">
                     <p style="margin: 0; font-size: 0.9rem; color: #2d5016;">
-                        <strong>💡 开发提示：</strong>实际部署时，这里会显示真实的网盘下载页面
+                        <strong>💡 技术说明：</strong>当前版本用于展示前端界面和交互效果，后端API集成后即可提供真实搜索和下载功能。
                     </p>
                 </div>
             </div>
-            <button onclick="this.closest('.info-dialog-overlay').remove()"
-                    style="margin-top: 1.5rem; padding: 0.75rem 2rem; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">
-                我知道了
-            </button>
+
+            <div style="margin-top: 1.5rem; display: flex; gap: 1rem; justify-content: center;">
+                <button onclick="window.copyToClipboard('演示链接: ${downloadUrl}')"
+                        style="padding: 0.5rem 1rem; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+                    📋 复制演示链接
+                </button>
+                <button onclick="this.closest('.info-dialog-overlay').remove()"
+                        style="padding: 0.5rem 1rem; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
+                    我知道了
+                </button>
+            </div>
         </div>
     `;
 
