@@ -5,9 +5,11 @@
   "main": "index.html",
   "scripts": {
     "start": "npx serve . -l 3000",
-    "build": "echo '静态网站无需构建'",
+    "build": "echo 'Static site - no build needed'",
     "dev": "npx serve . -l 3000",
-    "preview": "npx serve . -l 8080"
+    "preview": "npx serve . -l 8080",
+    "deploy:vercel": "vercel --prod",
+    "deploy:netlify": "netlify deploy --prod --dir ."
   },
   "keywords": [
     "网盘搜索",
@@ -29,5 +31,13 @@
   "homepage": "https://www.ziyuanso.net",
   "engines": {
     "node": ">=14.0.0"
-  }
+  },
+  "files": [
+    "index.html",
+    "assets/**/*",
+    "pages/**/*",
+    "*.json",
+    "*.toml",
+    "README.md"
+  ]
 }
