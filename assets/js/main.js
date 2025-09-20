@@ -1004,6 +1004,8 @@ class SearchResultsPage {
         if (pageNumbers) {
             const pageButtonsHTML = this.generatePageButtons(totalPages);
             pageNumbers.innerHTML = pageButtonsHTML;
+            // 设置新页码按钮的事件监听器
+            this.setupPaginationEventListeners();
         }
     }
 
@@ -1019,7 +1021,7 @@ class SearchResultsPage {
         }
 
         if (startPage > 1) {
-            buttons += `<button class="page-btn" onclick="searchPage.goToPage(1)">1</button>`;
+            buttons += `<button class="page-btn" data-page="1">1</button>`;
             if (startPage > 2) {
                 buttons += `<span class="page-dots">...</span>`;
             }
@@ -1027,17 +1029,28 @@ class SearchResultsPage {
 
         for (let i = startPage; i <= endPage; i++) {
             const activeClass = i === this.currentPage ? 'active' : '';
-            buttons += `<button class="page-btn ${activeClass}" onclick="searchPage.goToPage(${i})">${i}</button>`;
+            buttons += `<button class="page-btn ${activeClass}" data-page="${i}">${i}</button>`;
         }
 
         if (endPage < totalPages) {
             if (endPage < totalPages - 1) {
                 buttons += `<span class="page-dots">...</span>`;
             }
-            buttons += `<button class="page-btn" onclick="searchPage.goToPage(${totalPages})">${totalPages}</button>`;
+            buttons += `<button class="page-btn" data-page="${totalPages}">${totalPages}</button>`;
         }
 
         return buttons;
+    }
+
+    // 设置分页事件监听器
+    setupPaginationEventListeners() {
+        const pageButtons = document.querySelectorAll('.page-btn[data-page]');
+        pageButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const page = parseInt(e.target.getAttribute('data-page'));
+                this.goToPage(page);
+            });
+        });
     }
 
     // 跳转到指定页面
@@ -1053,7 +1066,130 @@ class SearchResultsPage {
         const resultsHTML = results.map(result => this.createResultHTML(result)).join('');
         resultsContainer.innerHTML = resultsHTML;
 
+        // 添加按钮事件监听器
+        this.setupResultsEventListeners();
+
         this.updateResultsCount(results.length);
+    }
+
+    // 设置搜索结果的事件监听器
+    setupResultsEventListeners() {
+        const downloadButtons = document.querySelectorAll('.btn-download');
+        const shareButtons = document.querySelectorAll('.btn-share');
+
+        downloadButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const resultId = e.target.getAttribute('data-result-id');
+                this.handleDownload(resultId);
+            });
+        });
+
+        shareButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                const resultId = e.target.getAttribute('data-result-id');
+                this.handleShare(resultId);
+            });
+        });
+    }
+
+    // 处理下载按钮点击
+    handleDownload(resultId) {
+        const result = this.findResultById(resultId);
+        if (!result) {
+            this.showAlert('未找到该资源', 'error');
+            return;
+        }
+
+        // 根据不同的平台处理下载
+        switch (result.source) {
+            case 'channel':
+                // 频道资源，跳转到网盘页面
+                window.open(result.downloadUrl, '_blank');
+                this.showAlert(`正在跳转到 ${result.platformName}...`, 'info');
+                break;
+            case 'plugin':
+                // 插件资源，可能需要特殊处理
+                if (result.platform === 'magnet') {
+                    // 磁力链接
+                    navigator.clipboard.writeText(result.downloadUrl).then(() => {
+                        this.showAlert('磁力链接已复制到剪贴板:\n' + result.downloadUrl, 'success');
+                    }).catch(() => {
+                        prompt('磁力链接:', result.downloadUrl);
+                    });
+                } else {
+                    window.open(result.downloadUrl, '_blank');
+                    this.showAlert(`正在获取 ${result.title} 的下载链接...`, 'info');
+                }
+                break;
+            default:
+                window.open(result.downloadUrl, '_blank');
+                this.showAlert(`正在获取 ${result.title} 的下载链接...`, 'info');
+        }
+    }
+
+    // 处理分享按钮点击
+    handleShare(resultId) {
+        const result = this.findResultById(resultId);
+        if (!result) {
+            this.showAlert('未找到该资源', 'error');
+            return;
+        }
+
+        const shareUrl = `${window.location.origin}/resource/${resultId}?title=${encodeURIComponent(result.title)}`;
+        const shareText = `推荐资源: ${result.title}\n大小: ${result.size}\n平台: ${result.platformName}\n链接: ${shareUrl}`;
+
+        navigator.clipboard.writeText(shareText).then(() => {
+            this.showAlert('分享信息已复制到剪贴板', 'success');
+        }).catch(() => {
+            prompt('分享信息:', shareText);
+        });
+    }
+
+    // 显示提示消息
+    showAlert(message, type = 'info') {
+        const alertDiv = document.createElement('div');
+        alertDiv.className = `alert alert-${type}`;
+        alertDiv.innerHTML = `
+            <span class="alert-icon">${this.getAlertIcon(type)}</span>
+            <span class="alert-message">${message}</span>
+            <button class="alert-close">&times;</button>
+        `;
+
+        document.body.appendChild(alertDiv);
+
+        setTimeout(() => {
+            alertDiv.classList.add('show');
+        }, 100);
+
+        const closeBtn = alertDiv.querySelector('.alert-close');
+        closeBtn.addEventListener('click', () => {
+            this.hideAlert(alertDiv);
+        });
+
+        setTimeout(() => {
+            this.hideAlert(alertDiv);
+        }, 5000);
+    }
+
+    // 隐藏提示消息
+    hideAlert(alertDiv) {
+        alertDiv.classList.remove('show');
+        setTimeout(() => {
+            if (alertDiv.parentNode) {
+                alertDiv.remove();
+            }
+        }, 300);
+    }
+
+    // 获取提示图标
+    getAlertIcon(type) {
+        const icons = {
+            info: 'ℹ️',
+            success: '✅',
+            warning: '⚠️',
+            error: '❌'
+        };
+        return icons[type] || icons.info;
     }
 
     createResultHTML(result) {
@@ -1061,7 +1197,7 @@ class SearchResultsPage {
         const typeIcon = this.getTypeIcon(result.type);
 
         return `
-            <div class="result-item">
+            <div class="result-item" data-result-id="${result.id}">
                 <div class="result-header">
                     <div class="result-title">
                         <span class="type-icon">${typeIcon}</span>
@@ -1080,10 +1216,10 @@ class SearchResultsPage {
                     </span>
                 </div>
                 <div class="result-actions">
-                    <button class="btn-download" onclick="handleDownload(${result.id})">
+                    <button class="btn-download" data-result-id="${result.id}">
                         ⬇️ 获取链接
                     </button>
-                    <button class="btn-share" onclick="handleShare(${result.id})">
+                    <button class="btn-share" data-result-id="${result.id}">
                         🔗 分享
                     </button>
                 </div>
@@ -1155,67 +1291,6 @@ class SearchResultsPage {
             loadingDiv.remove();
         }
     }
-}
-
-function handleDownload(resultId) {
-    const searchPage = window.searchPage;
-    if (!searchPage) {
-        alert('页面未初始化完成，请稍后再试');
-        return;
-    }
-
-    const result = searchPage.findResultById(resultId);
-    if (!result) {
-        alert('未找到该资源');
-        return;
-    }
-
-    // 根据不同的平台处理下载
-    switch (result.source) {
-        case 'channel':
-            // 频道资源，跳转到网盘页面
-            window.open(result.downloadUrl, '_blank');
-            break;
-        case 'plugin':
-            // 插件资源，可能需要特殊处理
-            if (result.platform === 'magnet') {
-                // 磁力链接
-                navigator.clipboard.writeText(result.downloadUrl).then(() => {
-                    alert('磁力链接已复制到剪贴板:\n' + result.downloadUrl);
-                }).catch(() => {
-                    prompt('磁力链接:', result.downloadUrl);
-                });
-            } else {
-                window.open(result.downloadUrl, '_blank');
-            }
-            break;
-        default:
-            alert(`正在获取 ${result.title} 的下载链接...`);
-            window.open(result.downloadUrl, '_blank');
-    }
-}
-
-function handleShare(resultId) {
-    const searchPage = window.searchPage;
-    if (!searchPage) {
-        alert('页面未初始化完成，请稍后再试');
-        return;
-    }
-
-    const result = searchPage.findResultById(resultId);
-    if (!result) {
-        alert('未找到该资源');
-        return;
-    }
-
-    const shareUrl = `${window.location.origin}/resource/${resultId}?title=${encodeURIComponent(result.title)}`;
-    const shareText = `推荐资源: ${result.title}\n大小: ${result.size}\n平台: ${result.platformName}\n链接: ${shareUrl}`;
-
-    navigator.clipboard.writeText(shareText).then(() => {
-        alert('分享信息已复制到剪贴板');
-    }).catch(() => {
-        prompt('分享信息:', shareText);
-    });
 }
 
 // 全局搜索页面实例
