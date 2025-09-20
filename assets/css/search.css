@@ -527,48 +527,456 @@
     font-size: 0.7rem;
 }
 
-/* 响应式设计 */
+/* 配置控制按钮 */
+.config-controls {
+    margin-top: 1rem;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.config-btn {
+    padding: 0.5rem 1rem;
+    background: var(--secondary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.8rem;
+    transition: var(--transition);
+}
+
+.config-btn:hover {
+    background: var(--primary-color);
+}
+
+.config-btn:disabled {
+    background: var(--text-secondary);
+    cursor: not-allowed;
+}
+
+/* 信任度标记 */
+.trust-badge {
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--border-radius);
+    font-size: 0.7rem;
+    font-weight: 500;
+    margin-left: 0.5rem;
+}
+
+.trust-high {
+    background: var(--success-color);
+    color: white;
+}
+
+.trust-medium {
+    background: var(--warning-color);
+    color: white;
+}
+
+.trust-low {
+    background: var(--accent-color);
+    color: white;
+}
+
+/* 警告标记 */
+.result-warnings {
+    margin: 0.5rem 0;
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.warning-badge {
+    background: rgba(243, 156, 18, 0.1);
+    color: var(--warning-color);
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--border-radius);
+    font-size: 0.7rem;
+    border: 1px solid var(--warning-color);
+}
+
+/* 有效性指示器 */
+.validity-indicator {
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+    font-weight: 500;
+}
+
+.validity-indicator.valid {
+    background: rgba(39, 174, 96, 0.1);
+    color: var(--success-color);
+    border: 1px solid var(--success-color);
+}
+
+.validity-indicator.invalid {
+    background: rgba(231, 76, 60, 0.1);
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+}
+
+/* 结果项信任度样式 */
+.result-item.low {
+    border-left: 4px solid var(--accent-color);
+    background: rgba(231, 76, 60, 0.02);
+}
+
+.result-item.medium {
+    border-left: 4px solid var(--warning-color);
+    background: rgba(243, 156, 18, 0.02);
+}
+
+.result-item.high {
+    border-left: 4px solid var(--success-color);
+    background: rgba(39, 174, 96, 0.02);
+}
+
+/* 检测按钮 */
+.btn-check-validity {
+    background: var(--text-secondary);
+    color: white;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: var(--transition);
+}
+
+.btn-check-validity:hover {
+    background: var(--primary-color);
+}
+
+.btn-check-validity:disabled {
+    background: var(--background-color);
+    color: var(--text-secondary);
+    cursor: not-allowed;
+}
+
+/* 警告下载按钮 */
+.btn-warning {
+    background: var(--warning-color) !important;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(243, 156, 18, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 10px rgba(243, 156, 18, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(243, 156, 18, 0);
+    }
+}
+
+/* 统计网格扩展 */
+.stat-type {
+    font-size: 1rem;
+    margin-right: 0.25rem;
+}
+
+.stat-priority {
+    background: var(--background-color);
+    padding: 0.1rem 0.3rem;
+    border-radius: 10px;
+    font-size: 0.6rem;
+    opacity: 0.8;
+}
+
+/* 性能统计样式 */
+.performance-stats {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+}
+
+.performance-stats h4 {
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    font-size: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.performance-stats h4::before {
+    content: "📊";
+    font-size: 1.2rem;
+}
+
+.performance-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.perf-metric {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.75rem;
+    background: var(--background-color);
+    border-radius: var(--border-radius);
+    border: 1px solid var(--border-color);
+    text-align: center;
+}
+
+.metric-label {
+    font-size: 0.8rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.metric-value {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--secondary-color);
+}
+
+.performance-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.perf-btn {
+    padding: 0.5rem 1rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.perf-btn:hover {
+    background: var(--secondary-color);
+    transform: translateY(-1px);
+}
+
+.perf-btn:active {
+    transform: translateY(0);
+}
+
+.perf-btn:disabled {
+    background: var(--text-secondary);
+    cursor: not-allowed;
+    transform: none;
+}
+
+#health-check-btn::before {
+    content: "🔍";
+}
+
+#auto-optimize-btn::before {
+    content: "⚡";
+}
+
+#validity-check-btn::before {
+    content: "🔗";
+}
+
+/* 增强的统计项样式 */
+.stat-item {
+    position: relative;
+    overflow: hidden;
+}
+
+.stat-item::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 3px;
+    height: 100%;
+    background: var(--border-color);
+    transition: var(--transition);
+}
+
+.stat-item.searching::before {
+    background: var(--warning-color);
+    animation: pulse-border 1.5s infinite;
+}
+
+.stat-item.completed::before {
+    background: var(--success-color);
+}
+
+.stat-item.error::before {
+    background: var(--accent-color);
+}
+
+@keyframes pulse-border {
+    0%, 100% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.3;
+    }
+}
+
+.stat-success-rate {
+    font-size: 0.7rem;
+    padding: 0.1rem 0.3rem;
+    border-radius: 10px;
+    font-weight: 500;
+    margin-left: 0.5rem;
+}
+
+.success-rate-high {
+    background: rgba(39, 174, 96, 0.1);
+    color: var(--success-color);
+    border: 1px solid var(--success-color);
+}
+
+.success-rate-medium {
+    background: rgba(243, 156, 18, 0.1);
+    color: var(--warning-color);
+    border: 1px solid var(--warning-color);
+}
+
+.success-rate-low {
+    background: rgba(231, 76, 60, 0.1);
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+}
+
+.stat-response-time {
+    font-size: 0.7rem;
+    opacity: 0.8;
+    margin-left: 0.5rem;
+}
+
+/* 增强的警告和信任度显示 */
+.result-item.high {
+    border-left: 4px solid var(--success-color);
+    background: rgba(39, 174, 96, 0.02);
+}
+
+.result-item.medium {
+    border-left: 4px solid var(--warning-color);
+    background: rgba(243, 156, 18, 0.02);
+}
+
+.result-item.low {
+    border-left: 4px solid var(--accent-color);
+    background: rgba(231, 76, 60, 0.02);
+    position: relative;
+}
+
+.result-item.low::after {
+    content: "⚠️";
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 1.5rem;
+    opacity: 0.6;
+}
+
+/* 链接状态指示器增强 */
+.validity-indicator {
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--border-radius);
+    font-size: 0.8rem;
+    font-weight: 500;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.validity-indicator.valid {
+    background: rgba(39, 174, 96, 0.1);
+    color: var(--success-color);
+    border: 1px solid var(--success-color);
+}
+
+.validity-indicator.invalid {
+    background: rgba(231, 76, 60, 0.1);
+    color: var(--accent-color);
+    border: 1px solid var(--accent-color);
+}
+
+.validity-indicator.checking {
+    background: rgba(243, 156, 18, 0.1);
+    color: var(--warning-color);
+    border: 1px solid var(--warning-color);
+    animation: pulse 2s infinite;
+}
+
+/* 搜索统计扩展布局 */
+.search-stats {
+    background: var(--card-background);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow);
+    overflow: hidden;
+}
+
+.search-stats h4 {
+    background: var(--background-color);
+    margin: 0;
+    padding: 1rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.stats-grid {
+    padding: 1rem;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+}
+
+.config-controls {
+    padding: 1rem;
+    border-top: 1px solid var(--border-color);
+    background: var(--background-color);
+}
+
+/* 响应式性能统计 */
 @media (max-width: 768px) {
-    .results-container {
-        grid-template-columns: 1fr;
-        gap: 1rem;
+    .performance-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 0.75rem;
     }
 
-    .results-sidebar {
-        position: static;
-        order: 2;
-    }
-
-    .results-header {
-        flex-direction: column;
-        gap: 1rem;
-        align-items: flex-start;
-    }
-
-    .result-header {
-        flex-direction: column;
-        gap: 1rem;
-        align-items: flex-start;
-    }
-
-    .result-meta {
-        flex-wrap: wrap;
-        gap: 1rem;
-    }
-
-    .result-actions {
+    .performance-actions {
         flex-direction: column;
     }
 
-    .pagination {
-        flex-wrap: wrap;
-        gap: 0.25rem;
-    }
-
-    .page-numbers {
-        order: -1;
+    .perf-btn {
         width: 100%;
         justify-content: center;
+    }
+
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 480px) {
+    .performance-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .perf-metric {
+        padding: 0.5rem;
+    }
+
+    .performance-stats {
+        padding: 0.75rem;
     }
 }
 
