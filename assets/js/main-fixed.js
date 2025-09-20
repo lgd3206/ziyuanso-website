@@ -403,7 +403,14 @@ class SimpleSearchResultsPage {
     generateQuickResults(query) {
         console.log('生成快速测试结果:', query);
         const results = [];
-        const sources = ['PanSearch', '去盘搜', 'Labi网盘', '夸克网盘', '直真搜索', '闪电资源'];
+        const sources = [
+            { name: 'PanSearch', domain: 'pansearch' },
+            { name: '去盘搜', domain: 'qupanso' },
+            { name: 'Labi网盘', domain: 'labi' },
+            { name: '夸克网盘', domain: 'quark' },
+            { name: '直真搜索', domain: 'zhizhen' },
+            { name: '闪电资源', domain: 'shandian' }
+        ];
         const types = ['video', 'software', 'document', 'music'];
 
         for (let i = 0; i < 15; i++) {
@@ -413,13 +420,13 @@ class SimpleSearchResultsPage {
             results.push({
                 id: `quick_${i + 1}`,
                 title: `【高清】${query} ${this.getTypeText(type)}资源 第${i + 1}个`,
-                platform: source.toLowerCase(),
-                platformName: source,
+                platform: source.domain,
+                platformName: source.name,
                 size: `${(Math.random() * 8 + 0.5).toFixed(1)} GB`,
                 type: type,
                 date: new Date(Date.now() - Math.random() * 30 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
                 quality: Math.random() > 0.3 ? 'high' : 'medium',
-                downloadUrl: `https://${source.toLowerCase().replace(' ', '')}.com/s/${this.generateRandomCode()}`,
+                downloadUrl: `https://${source.domain}.com/s/${this.generateRandomCode()}`,
                 source: 'channel',
                 trustLevel: Math.random() > 0.2 ? 'high' : (Math.random() > 0.5 ? 'medium' : 'low'),
                 isValid: Math.random() > 0.15
@@ -530,6 +537,10 @@ class SimpleSearchResultsPage {
             low: '🚨 低信任'
         };
 
+        // 安全地转义字符串，避免JavaScript注入
+        const safeTitle = result.title.replace(/'/g, "\\'").replace(/"/g, '\\"');
+        const safeUrl = result.downloadUrl.replace(/'/g, "\\'").replace(/"/g, '\\"');
+
         return `
             <div class="result-item" style="padding: 1.5rem; margin-bottom: 1rem; background: white; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); border-left: 4px solid ${trustBadgeColors[result.trustLevel]};">
                 <div class="result-header" style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1rem;">
@@ -554,11 +565,11 @@ class SimpleSearchResultsPage {
                     </span>
                 </div>
                 <div class="result-actions" style="display: flex; gap: 1rem;">
-                    <button onclick="window.showDownloadDialog('${result.downloadUrl}', '${result.title}')"
+                    <button onclick="window.showDownloadDialog('${safeUrl}', '${safeTitle}')"
                             style="padding: 0.5rem 1rem; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
                         ⬇️ 获取链接
                     </button>
-                    <button onclick="navigator.clipboard.writeText('${result.title} - ${result.downloadUrl}').then(() => alert('分享信息已复制到剪贴板')).catch(() => prompt('分享信息:', '${result.title} - ${result.downloadUrl}'))"
+                    <button onclick="window.copyToClipboard('${safeUrl}'); window.showToast('链接已复制: ${result.platformName}', 'success');"
                             style="padding: 0.5rem 1rem; background: #95a5a6; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
                         🔗 分享
                     </button>
