@@ -1,0 +1,20 @@
+# Netlify 部署配置
+[build]
+  publish = "."
+  command = "echo 'Static site - no build needed'"
+
+[[redirects]]
+  from = "/pages/*"
+  to = "/pages/:splat"
+  status = 200
+
+[[redirects]]
+  from = "/assets/*"
+  to = "/assets/:splat"
+  status = 200
+
+# SPA 路由支持
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
