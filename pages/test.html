@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试页面 - 资源搜</title>
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="stylesheet" href="../assets/css/search.css">
+</head>
+<body>
+    <header class="header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <a href="/">
+                        <span class="logo-text">资源搜</span>
+                    </a>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="search-page">
+        <div class="search-header">
+            <div class="search-container">
+                <form class="search-form compact" action="/pages/search.html" method="GET">
+                    <div class="search-input-wrapper">
+                        <input type="text" name="q" class="search-input" value="测试" placeholder="请输入要搜索的资源关键词..." autocomplete="off" required>
+                        <button type="submit" class="search-btn">🔍</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="results-container">
+            <div class="results-sidebar">
+                <div class="filter-section">
+                    <h3>筛选条件</h3>
+                    <div class="filter-group">
+                        <h4>网盘平台</h4>
+                        <label class="filter-option">
+                            <input type="checkbox" name="platform" value="baidu" checked>
+                            <span>📦 百度网盘</span>
+                        </label>
+                        <label class="filter-option">
+                            <input type="checkbox" name="platform" value="aliyun" checked>
+                            <span>☁️ 阿里云盘</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="results-main">
+                <div class="results-header">
+                    <div class="results-info">
+                        <h2>搜索结果</h2>
+                        <p class="results-count">找到 1 个相关结果</p>
+                    </div>
+                </div>
+
+                <div class="search-results">
+                    <div class="result-item" data-result-id="test_123">
+                        <div class="result-header">
+                            <div class="result-title">
+                                <span class="type-icon">🎬</span>
+                                <h3>【测试】功能测试文件</h3>
+                            </div>
+                            <div class="result-platform">
+                                <span class="platform-icon">📦</span>
+                                <span class="platform-name">百度网盘</span>
+                            </div>
+                        </div>
+                        <div class="result-meta">
+                            <span class="result-size">📁 1.2 GB</span>
+                            <span class="result-date">📅 2025-09-20</span>
+                            <span class="result-quality quality-high">高质量</span>
+                        </div>
+                        <div class="result-actions">
+                            <button class="btn-download" data-result-id="test_123">
+                                ⬇️ 获取链接
+                            </button>
+                            <button class="btn-share" data-result-id="test_123">
+                                🔗 分享
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        // 简单的测试数据
+        const testResults = [{
+            id: 'test_123',
+            title: '【测试】功能测试文件',
+            platform: 'baidu',
+            platformName: '百度网盘',
+            size: '1.2 GB',
+            type: 'video',
+            date: '2025-09-20',
+            quality: 'high',
+            downloadUrl: 'https://pan.baidu.com/s/test123',
+            source: 'channel',
+            channelId: 'baidu'
+        }];
+
+        // 简化的测试类
+        class TestSearchPage {
+            constructor() {
+                this.allResults = testResults;
+                this.setupTestEventListeners();
+            }
+
+            findResultById(resultId) {
+                return this.allResults.find(result => result.id === resultId);
+            }
+
+            setupTestEventListeners() {
+                const downloadButtons = document.querySelectorAll('.btn-download');
+                const shareButtons = document.querySelectorAll('.btn-share');
+
+                downloadButtons.forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const resultId = e.target.getAttribute('data-result-id');
+                        this.handleDownload(resultId);
+                    });
+                });
+
+                shareButtons.forEach(button => {
+                    button.addEventListener('click', (e) => {
+                        const resultId = e.target.getAttribute('data-result-id');
+                        this.handleShare(resultId);
+                    });
+                });
+            }
+
+            handleDownload(resultId) {
+                const result = this.findResultById(resultId);
+                if (!result) {
+                    alert('未找到该资源');
+                    return;
+                }
+
+                alert(`正在跳转到 ${result.platformName}...\n\n资源: ${result.title}\n大小: ${result.size}\n链接: ${result.downloadUrl}`);
+                // window.open(result.downloadUrl, '_blank');
+            }
+
+            handleShare(resultId) {
+                const result = this.findResultById(resultId);
+                if (!result) {
+                    alert('未找到该资源');
+                    return;
+                }
+
+                const shareText = `推荐资源: ${result.title}\n大小: ${result.size}\n平台: ${result.platformName}`;
+
+                navigator.clipboard.writeText(shareText).then(() => {
+                    alert('分享信息已复制到剪贴板:\n\n' + shareText);
+                }).catch(() => {
+                    alert('分享信息:\n\n' + shareText);
+                });
+            }
+        }
+
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            new TestSearchPage();
+        });
+    </script>
+</body>
+</html>
