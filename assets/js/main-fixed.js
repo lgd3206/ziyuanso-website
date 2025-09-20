@@ -706,14 +706,19 @@ window.showDownloadDialog = function(downloadUrl, title) {
                 <p style="margin: 0 0 0.5rem 0; font-weight: bold; color: #2c3e50;">下载链接：</p>
                 <p style="margin: 0; color: #3498db; word-break: break-all;">${downloadUrl}</p>
             </div>
+            <div style="background: #fff3cd; border: 1px solid #ffeaa7; border-radius: 4px; padding: 0.75rem; margin-bottom: 1rem;">
+                <p style="margin: 0; font-size: 0.85rem; color: #856404;">
+                    <strong>💡 提示：</strong>这是演示链接，实际使用时会连接到真实的网盘资源
+                </p>
+            </div>
             <div style="display: flex; gap: 1rem; justify-content: center;">
                 <button onclick="window.copyToClipboard('${downloadUrl}')"
                         style="padding: 0.75rem 1.5rem; background: #27ae60; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
                     📋 复制链接
                 </button>
-                <button onclick="window.open('${downloadUrl}', '_blank')"
+                <button onclick="window.showLinkInfo('${downloadUrl}', '${title}')"
                         style="padding: 0.75rem 1.5rem; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
-                    🔗 打开链接
+                    ℹ️ 链接信息
                 </button>
                 <button onclick="window.closeDownloadDialog()"
                         style="padding: 0.75rem 1.5rem; background: #95a5a6; color: white; border: none; border-radius: 4px; cursor: pointer; font-size: 0.9rem;">
@@ -741,6 +746,87 @@ window.showDownloadDialog = function(downloadUrl, title) {
         }
     };
     document.addEventListener('keydown', handleEscape);
+};
+
+// 全局函数：显示链接信息
+window.showLinkInfo = function(downloadUrl, title) {
+    window.showToast('这是演示环境，实际使用时将跳转到真实网盘页面', 'info');
+
+    // 显示详细信息
+    const infoDialog = document.createElement('div');
+    infoDialog.className = 'info-dialog-overlay';
+    infoDialog.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 10002;
+    `;
+
+    const infoContent = document.createElement('div');
+    infoContent.style.cssText = `
+        background: white;
+        border-radius: 8px;
+        padding: 2rem;
+        max-width: 600px;
+        width: 90%;
+        max-height: 80vh;
+        overflow-y: auto;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    `;
+
+    infoContent.innerHTML = `
+        <div style="text-align: center;">
+            <h3 style="margin: 0 0 1.5rem 0; color: #2c3e50;">📋 使用说明</h3>
+            <div style="text-align: left; line-height: 1.6;">
+                <h4 style="color: #3498db; margin-bottom: 0.5rem;">🔗 关于链接：</h4>
+                <p style="margin-bottom: 1rem; color: #7f8c8d;">
+                    当前显示的是演示链接，实际部署后会连接到真实的网盘资源页面。
+                </p>
+
+                <h4 style="color: #3498db; margin-bottom: 0.5rem;">📥 如何下载：</h4>
+                <ul style="margin-bottom: 1rem; color: #7f8c8d; padding-left: 1.5rem;">
+                    <li>复制链接地址</li>
+                    <li>在浏览器中打开链接</li>
+                    <li>根据网盘平台要求进行下载</li>
+                    <li>部分资源可能需要提取码</li>
+                </ul>
+
+                <h4 style="color: #3498db; margin-bottom: 0.5rem;">⚠️ 注意事项：</h4>
+                <ul style="margin-bottom: 1rem; color: #7f8c8d; padding-left: 1.5rem;">
+                    <li>请确保网络连接稳定</li>
+                    <li>大文件建议使用下载工具</li>
+                    <li>注意文件安全性扫描</li>
+                    <li>遵守相关法律法规</li>
+                </ul>
+
+                <div style="background: #e8f5e8; padding: 1rem; border-radius: 4px; border-left: 4px solid #27ae60;">
+                    <p style="margin: 0; font-size: 0.9rem; color: #2d5016;">
+                        <strong>💡 开发提示：</strong>实际部署时，这里会显示真实的网盘下载页面
+                    </p>
+                </div>
+            </div>
+            <button onclick="this.closest('.info-dialog-overlay').remove()"
+                    style="margin-top: 1.5rem; padding: 0.75rem 2rem; background: #3498db; color: white; border: none; border-radius: 4px; cursor: pointer;">
+                我知道了
+            </button>
+        </div>
+    `;
+
+    infoDialog.appendChild(infoContent);
+    document.body.appendChild(infoDialog);
+
+    // 点击覆盖层关闭
+    infoDialog.addEventListener('click', (e) => {
+        if (e.target === infoDialog) {
+            infoDialog.remove();
+        }
+    });
 };
 
 // 全局函数：关闭下载对话框
